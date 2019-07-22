@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'com.revolut'
+version '1.0-SNAPSHOT'
+
+ext {
+    hibernateVersion = "5.3.7.Final"
+    h2Version = "1.4.199"
+    fixtureFactoryVersion = "3.1.0"
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.hibernate:hibernate-core:${hibernateVersion}"
+    compile "com.h2database:h2:${h2Version}"
+    compile "br.com.six2six:fixture-factory:${fixtureFactoryVersion}"
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:3.0.0'
+}
