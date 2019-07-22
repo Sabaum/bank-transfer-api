@@ -3,14 +3,14 @@ package com.resolut.banktransferapi.account.service;
 import com.resolut.banktransferapi.account.domain.model.Account;
 import com.resolut.banktransferapi.account.domain.repository.AccountRepository;
 import com.resolut.banktransferapi.exception.InvalidOperationException;
-import com.resolut.banktransferapi.transfer.view.request.TransferRequest;
+import com.resolut.banktransferapi.view.request.TransferRequest;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 public class AccountServiceImpl implements AccountService{
 
-    private AccountRepository repository;
+    private final AccountRepository repository;
 
     public AccountServiceImpl(AccountRepository repository) {
         this.repository = repository;

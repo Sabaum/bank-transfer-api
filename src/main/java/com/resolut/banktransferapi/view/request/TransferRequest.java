@@ -1,10 +1,11 @@
-package com.resolut.banktransferapi.transfer.view.request;
+package com.resolut.banktransferapi.view.request;
 
 import java.math.BigDecimal;
 
 public class TransferRequest {
 
     private Integer accountIdFrom;
+    private Integer accountIdTo;
     private BigDecimal amount;
 
     public Integer getAccountIdFrom() {
@@ -13,6 +14,14 @@ public class TransferRequest {
 
     public void setAccountIdFrom(Integer accountIdFrom) {
         this.accountIdFrom = accountIdFrom;
+    }
+
+    public Integer getAccountIdTo() {
+        return accountIdTo;
+    }
+
+    public void setAccountIdTo(Integer accountIdTo) {
+        this.accountIdTo = accountIdTo;
     }
 
     public BigDecimal getAmount() {
