@@ -2,25 +2,48 @@ plugins {
     id 'java'
 }
 
+apply plugin: 'war'
+apply from: 'https://raw.github.com/gretty-gradle-plugin/gretty/master/pluginScripts/gretty.plugin'
+
 group 'com.revolut'
 version '1.0-SNAPSHOT'
 
 ext {
     hibernateVersion = "5.3.7.Final"
     h2Version = "1.4.199"
-    fixtureFactoryVersion = "3.1.0"
+    resteasyVersion = "4.1.1.Final"
+    weldVersion = "3.1.1.Final"
+//    fixtureFactoryVersion = "3.1.0"
 }
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
+    maven {
+        name "lightbend-maven-release"
+        url "https://repo.lightbend.com/lightbend/maven-releases"
+    }
+    ivy {
+        name "lightbend-ivy-release"
+        url "https://repo.lightbend.com/lightbend/ivy-releases"
+        layout "ivy"
+    }
 }
 
 dependencies {
     compile "org.hibernate:hibernate-core:${hibernateVersion}"
     compile "com.h2database:h2:${h2Version}"
-    compile "br.com.six2six:fixture-factory:${fixtureFactoryVersion}"
+    compile "org.jboss.resteasy:resteasy-servlet-initializer:${resteasyVersion}"
+    compile "org.jboss.resteasy:resteasy-jaxb-provider:${resteasyVersion}"
+    compile "org.jboss.resteasy:resteasy-jaxrs-all:${resteasyVersion}"
+    compile "org.jboss.resteasy:resteasy-jackson2-provider:${resteasyVersion}"
+    compile "org.jboss.resteasy:resteasy-cdi:${resteasyVersion}"
+    compile "org.jboss.weld.servlet:weld-servlet-shaded:${weldVersion}"
+    compile "org.eclipse.microprofile.config:microprofile-config-api"
+    runtime "io.smallrye:smallrye-config"
+//    compile "br.com.six2six:fixture-factory:${fixtureFactoryVersion}"
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:3.0.0'

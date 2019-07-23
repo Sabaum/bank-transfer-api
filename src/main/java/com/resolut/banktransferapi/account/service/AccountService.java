@@ -1,6 +1,6 @@
 package com.resolut.banktransferapi.account.service;
 
-import com.resolut.banktransferapi.view.request.TransferRequest;
+import com.resolut.banktransferapi.account.view.request.TransferRequest;
 
 public interface AccountService {
 

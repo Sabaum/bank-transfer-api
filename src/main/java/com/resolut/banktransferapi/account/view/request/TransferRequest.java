@@ -1,4 +1,4 @@
-package com.resolut.banktransferapi.view.request;
+package com.resolut.banktransferapi.account.view.request;
 
 import java.math.BigDecimal;
 

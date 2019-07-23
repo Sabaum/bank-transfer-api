@@ -1,8 +1,8 @@
-package com.resolut.banktransferapi.view;
+package com.resolut.banktransferapi.account.view;
 
 import com.resolut.banktransferapi.account.service.AccountService;
 import com.resolut.banktransferapi.exception.InvalidOperationException;
-import com.resolut.banktransferapi.view.request.TransferRequest;
+import com.resolut.banktransferapi.account.view.request.TransferRequest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
