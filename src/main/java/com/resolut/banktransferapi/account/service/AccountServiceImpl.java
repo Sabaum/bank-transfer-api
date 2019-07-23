@@ -5,16 +5,14 @@ import com.resolut.banktransferapi.account.domain.repository.AccountRepository;
 import com.resolut.banktransferapi.exception.InvalidOperationException;
 import com.resolut.banktransferapi.account.view.request.TransferRequest;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Optional;
 
 public class AccountServiceImpl implements AccountService{
 
-    private final AccountRepository repository;
-
-    public AccountServiceImpl(AccountRepository repository) {
-        this.repository = repository;
-    }
+    @Inject
+    private AccountRepository repository;
 
     public final void transfer(TransferRequest transferRequest) {
         if (transferRequest.getAmount() == null) {

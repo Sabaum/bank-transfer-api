@@ -3,6 +3,7 @@ package com.resolut.banktransferapi.account.view;
 import com.resolut.banktransferapi.account.service.AccountService;
 import com.resolut.banktransferapi.exception.InvalidOperationException;
 import com.resolut.banktransferapi.account.view.request.TransferRequest;
+import com.resolut.banktransferapi.exception.ValidationException;
 import com.resolut.banktransferapi.util.Constants;
 
 import javax.inject.Inject;
@@ -10,25 +11,28 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
-@Path("/account")
+@Path("/api/account")
 public class AccountController {
 
-    private final AccountService service;
-
     @Inject
-    public AccountController(AccountService service) {
-        this.service = service;
-    }
+    private AccountService service;
 
     @POST
     @Path("/transfer")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void transfer(TransferRequest request) {
-        validateTransferRequest(request);
+    public Response transfer(TransferRequest request) {
+        try {
+            validateTransferRequest(request);
+            service.transfer(request);
 
-        service.transfer(request);
+            return Response.ok("Transfer done").build();
+
+        } catch (ValidationException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 
     private void validateTransferRequest(TransferRequest request) {

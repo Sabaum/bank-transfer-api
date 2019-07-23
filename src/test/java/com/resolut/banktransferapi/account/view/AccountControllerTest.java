@@ -1,85 +1,93 @@
 package com.resolut.banktransferapi.account.view;
 
 import com.resolut.banktransferapi.account.service.AccountService;
-import com.resolut.banktransferapi.exception.InvalidOperationException;
 import com.resolut.banktransferapi.account.view.request.TransferRequest;
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {
 
     private static final Integer ANY_ID = 1;
     private static final Integer ANY_OTHER_ID = 2;
 
+    @InjectMocks
     private AccountController controller;
+    @Mock
     private AccountService service;
 
-    @Before
-    public void setUp() {
-        service = Mockito.mock(AccountService.class);
-        controller = new AccountController(service);
+    @Test
+    public void transfer_withNullRequest_shouldReturnError() {
+        Response response = controller.transfer(null);
+        Assert.assertEquals("Should fail for null request", "TransferRequest must be valid", response.getEntity());
     }
 
-    @Test(expected = InvalidOperationException.class)
-    public void transfer_withNullRequest_shouldThrowInvalidOperationException() {
-        controller.transfer(null);
-    }
-
-    @Test(expected = InvalidOperationException.class)
-    public void transfer_withNullValue_shouldThrowInvalidOperationException() {
+    @Test
+    public void transfer_withNullValue_shouldReturnError() {
         TransferRequest request = new TransferRequest();
 
-        controller.transfer(request);
+        Response response = controller.transfer(request);
+        Assert.assertEquals("Should fail for null amount", "Amount must be valid", response.getEntity());
     }
 
-    @Test(expected = InvalidOperationException.class)
-    public void transfer_withNullAccountFrom_shouldThrowInvalidOperationException() {
+    @Test
+    public void transfer_withNullAccountFrom_shouldReturnError() {
         TransferRequest request = new TransferRequest();
         request.setAmount(BigDecimal.TEN);
 
-        controller.transfer(request);
-    }
+        Response response = controller.transfer(request);
+        Assert.assertEquals("Should fail for null accountFrom", "AccountIdFrom must be valid", response.getEntity());
+   }
 
-    @Test(expected = InvalidOperationException.class)
-    public void transfer_withNullAccountTo_shouldThrowInvalidOperationException() {
+    @Test
+    public void transfer_withNullAccountTo_shouldReturnError() {
         TransferRequest request = new TransferRequest();
         request.setAmount(BigDecimal.TEN);
         request.setAccountIdFrom(ANY_ID);
 
-        controller.transfer(request);
+        Response response = controller.transfer(request);
+        Assert.assertEquals("Should fail for null accountTo", "AccountIdTo must be valid", response.getEntity());
     }
 
-    @Test(expected = InvalidOperationException.class)
-    public void transfer_withNegativeValue_shouldThrowInvalidOperationException() {
+    @Test
+    public void transfer_withNegativeValue_shouldReturnError() {
         TransferRequest request = new TransferRequest();
         request.setAmount(BigDecimal.valueOf(-1));
         request.setAccountIdFrom(ANY_ID);
         request.setAccountIdTo(ANY_OTHER_ID);
 
-        controller.transfer(request);
+        Response response = controller.transfer(request);
+        Assert.assertEquals("Should fail for negative value", "Amount must be a positive number", response.getEntity());
     }
 
-    @Test(expected = InvalidOperationException.class)
-    public void transfer_withZeroValue_shouldThrowInvalidOperationException() {
+    @Test
+    public void transfer_withZeroValue_shouldReturnError() {
         TransferRequest request = new TransferRequest();
         request.setAmount(BigDecimal.ZERO);
         request.setAccountIdFrom(ANY_ID);
         request.setAccountIdTo(ANY_OTHER_ID);
 
-        controller.transfer(request);
+        Response response = controller.transfer(request);
+        Assert.assertEquals("Should fail for zero value", "Amount must be a positive number", response.getEntity());
     }
 
-    @Test(expected = InvalidOperationException.class)
-    public void transfer_withSameAccountFromAndTo_shouldThrowInvalidOperationException() {
+    @Test
+    public void transfer_withSameAccountFromAndTo_shouldReturnError() {
         TransferRequest request = new TransferRequest();
         request.setAmount(BigDecimal.TEN);
         request.setAccountIdFrom(ANY_ID);
         request.setAccountIdTo(ANY_ID);
 
-        controller.transfer(request);
+        Response response = controller.transfer(request);
+        Assert.assertEquals("Should fail for same account", "Can't transfer to the same account", response.getEntity());
     }
 
     @Test
