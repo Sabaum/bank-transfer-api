@@ -2,21 +2,21 @@ package com.resolut.banktransferapi.account.service;
 
 import com.resolut.banktransferapi.account.domain.model.Account;
 import com.resolut.banktransferapi.account.domain.repository.AccountRepository;
-import com.resolut.banktransferapi.exception.InvalidOperationException;
 import com.resolut.banktransferapi.account.view.request.TransferRequest;
+import com.resolut.banktransferapi.exception.InvalidOperationException;
 
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-@Named
-@Default
 public class AccountServiceImpl implements AccountService{
 
-    @Inject
     private AccountRepository repository;
+
+    @Inject
+    public AccountServiceImpl(AccountRepository repository) {
+        this.repository = repository;
+    }
 
     public final void transfer(TransferRequest transferRequest) {
         if (transferRequest.getAmount() == null) {

@@ -10,83 +10,64 @@ package com.resolut.banktransferapi.config;
 //import org.jboss.weld.environment.se.WeldContainer;
 //import org.jboss.weld.environment.servlet.Listener;
 
-import java.io.File;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.resolut.banktransferapi.account.domain.repository.AccountRepository;
+import com.resolut.banktransferapi.account.domain.repository.JpaAccountRepository;
+import com.resolut.banktransferapi.account.service.AccountService;
+import com.resolut.banktransferapi.account.service.AccountServiceImpl;
+import com.resolut.banktransferapi.account.view.AccountController;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener;
+import org.jboss.resteasy.plugins.guice.ext.RequestScopeModule;
+import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
+
+import javax.inject.Singleton;
 
 public class Main {
 
-//    public static String[] PARAMETERS;
-//
-//    public static String[] getParameters() {
-//        final String[] copy = new String[Main.PARAMETERS.length];
-//        System.arraycopy(Main.PARAMETERS, 0, copy, 0, Main.PARAMETERS.length);
-//        return copy;
-//    }
-//
-//    /**
-//     * The main method called from the command line.
-//     *
-//     * @param args
-//     *            the command line arguments
-//     */
-//    public static void main(final String[] args) {
-//        try {
-//            new Main(args).startWeld();
-//        } catch (LifecycleException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    /**
-//     * Can be useful for some cloud deployments where the port is set as an
-//     * environment variable.
-//     */
-//    static void setListeningPort(final Tomcat tomcat) {
-//        String webPort = System.getenv("PORT");
-//        if (webPort == null || webPort.isEmpty()) {
-//            webPort = "8889";
-//        }
-//        tomcat.setPort(Integer.valueOf(webPort));
-//    }
-//
-//    public Main(final String[] commandLineArgs) throws LifecycleException {
-//        Main.PARAMETERS = commandLineArgs;
-//        final Tomcat tomcat = new Tomcat();
-//        Main.setListeningPort(tomcat);
-//
-//        final StandardContext ctx = (StandardContext) tomcat.addWebapp("/", new File("src/main/webapp/").getAbsolutePath());
-//
-//        // Declare an alternative location for your "WEB-INF/classes" dir
-//        // Servlet 3.0 annotation will work
-//        final WebResourceRoot resources = new StandardRoot(ctx);
-//        resources.addPreResources(new DirResourceSet(resources, "/WEB-INF/classes", new File("build/classes").getAbsolutePath(), "/"));
-//        ctx.setResources(resources);
-//
-//        ctx.addApplicationListener(Listener.class.getName());
-//
-//        // Enable JNDI InitialContext
-//        tomcat.enableNaming();
-//
-//        // Start server
-//        tomcat.start();
-//        tomcat.getServer().await();
-//    }
-//
-//    public WeldContainer startWeld() {
-//        final Weld weld = new Weld();
-//        Runtime.getRuntime().addShutdownHook(new ShutdownHook(weld));
-//        return weld.initialize();
-//    }
-//
-//    static class ShutdownHook extends Thread {
-//        private final Weld weld;
-//
-//        ShutdownHook(final Weld weld) {
-//            this.weld = weld;
-//        }
-//
-//        @Override
-//        public void run() {
-//            this.weld.shutdown();
-//        }
-//    }
+    public static void main(String[] args) throws Exception {
+        Injector injector = Guice.createInjector(new RevolutServiceModule());
+
+        injector.getAllBindings();
+
+        injector.createChildInjector().getAllBindings();
+
+        Server server = new Server(8080);
+        ServletContextHandler servletHandler = new ServletContextHandler();
+        servletHandler.addEventListener(injector.getInstance(GuiceResteasyBootstrapServletContextListener.class));
+
+        ServletHolder sh = new ServletHolder(HttpServletDispatcher.class);
+
+        servletHandler.addServlet(sh, "/*");
+
+        server.setHandler(servletHandler);
+        server.start();
+        server.join();
+    }
+
+    private static class RevolutServiceModule extends RequestScopeModule {
+
+        @Provides
+        @Singleton
+        public AccountRepository getAccountRepository() {
+            return new JpaAccountRepository();
+        }
+
+        @Provides
+        @Singleton
+        public AccountService getAccountService() {
+            return new AccountServiceImpl(getAccountRepository());
+        }
+
+        @Override
+        protected void configure() {
+            super.configure();
+            bind(AccountController.class);
+        }
+
+    }
 }
