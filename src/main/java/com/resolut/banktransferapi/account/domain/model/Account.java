@@ -14,7 +14,7 @@ public class Account {
 
     @Id
     private Integer id;
-    @Column(nullable = false, precision = 2)
+    @Column(nullable = false, precision = 9, scale = 2)
     private BigDecimal balance;
     @Column(nullable = false)
     private LocalDateTime createDate;
@@ -51,7 +51,7 @@ public class Account {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) < 1) {
             throw new InvalidOperationException("Amount should be greater than Zero");
         }
-        if (balance.compareTo(amount) < 1) {
+        if (balance.compareTo(amount) < 0) {
             throw new OutOfFundsException("Not enough balance available to perform this operation");
         }
         balance = balance.subtract(amount);

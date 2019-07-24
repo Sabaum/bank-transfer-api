@@ -1,35 +1,26 @@
 package com.resolut.banktransferapi.account.domain.repository;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.Transactional;
 import com.resolut.banktransferapi.account.domain.model.Account;
 
-import javax.enterprise.inject.Default;
-import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.Optional;
 
-@Named
-@Default
 public class JpaAccountRepository implements AccountRepository {
 
-    private static EntityManagerFactory entityManagerFactory;
+    @Inject
+    private Provider<EntityManager> entityManager;
 
     public Optional<Account> findAccountById(Integer id) {
-        EntityManager entityManager = openEntityManager();
-
-        return Optional.ofNullable(entityManager.find(Account.class, id));
+        return Optional.ofNullable(entityManager.get().find(Account.class, id));
     }
 
+    @Transactional
     @Override
     public void persist(Account account) {
-        openEntityManager().persist(account);
-    }
-
-    private static EntityManager openEntityManager() {
-        if (entityManagerFactory == null) {
-            entityManagerFactory = Persistence.createEntityManagerFactory( "bank-transfer-pu" );
-        }
-        return entityManagerFactory.createEntityManager();
+        EntityManager em = this.entityManager.get();
+        em.merge(account);
     }
 }

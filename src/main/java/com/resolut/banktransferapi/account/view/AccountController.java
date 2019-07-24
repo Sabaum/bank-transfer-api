@@ -1,13 +1,13 @@
 package com.resolut.banktransferapi.account.view;
 
+import com.google.inject.Inject;
 import com.resolut.banktransferapi.account.service.AccountService;
-import com.resolut.banktransferapi.exception.InvalidOperationException;
 import com.resolut.banktransferapi.account.view.request.TransferRequest;
+import com.resolut.banktransferapi.exception.InvalidOperationException;
 import com.resolut.banktransferapi.exception.ValidationException;
 import com.resolut.banktransferapi.util.Constants;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
 @Path("/api/account")
-@RequestScoped
+@Singleton
 public class AccountController {
 
     @Inject

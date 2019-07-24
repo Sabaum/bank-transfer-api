@@ -1,23 +1,25 @@
 package com.resolut.banktransferapi.account.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.Transactional;
 import com.resolut.banktransferapi.account.domain.model.Account;
 import com.resolut.banktransferapi.account.domain.repository.AccountRepository;
-import com.resolut.banktransferapi.exception.InvalidOperationException;
 import com.resolut.banktransferapi.account.view.request.TransferRequest;
+import com.resolut.banktransferapi.exception.InvalidOperationException;
 
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-@Named
-@Default
 public class AccountServiceImpl implements AccountService{
 
     @Inject
     private AccountRepository repository;
+    @Inject
+    private Provider<EntityManager> entityManager;
 
+    @Transactional
     public final void transfer(TransferRequest transferRequest) {
         if (transferRequest.getAmount() == null) {
             throw new InvalidOperationException("Transfer amount cannot be null");
@@ -43,8 +45,11 @@ public class AccountServiceImpl implements AccountService{
         accountFrom.withdrawal(amount);
         accountTo.deposit(amount);
 
+        System.out.println("AccountFrom.balance = " + accountFrom.getBalance());
+        System.out.println("AccountTo.balance = " + accountTo.getBalance());
         repository.persist(accountFrom);
         repository.persist(accountTo);
+
     }
 
 }

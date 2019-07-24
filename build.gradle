@@ -11,7 +11,7 @@ version '1.0-SNAPSHOT'
 ext {
     hibernateVersion = "5.3.7.Final"
     h2Version = "1.4.199"
-    resteasyVersion = "4.1.1.Final"
+    resteasyVersion = "3.8.1.Final"
     weldVersion = "3.1.1.Final"
     junitVersion = "4.12"
     mockitoVersion = "3.0.0"
@@ -35,20 +35,40 @@ repositories {
 }
 
 dependencies {
+    implementation "org.eclipse.jetty:jetty-servlet:9.4.19.v20190610"
+    implementation "com.google.inject:guice:4.2.2"
+    implementation 'com.google.inject.extensions:guice-persist:4.2.2'
+    implementation "com.google.inject.extensions:guice-servlet:4.2.2"
+    implementation "org.jboss.resteasy:resteasy-jaxrs:${resteasyVersion}"
+    implementation "org.jboss.resteasy:resteasy-guice:${resteasyVersion}"
+    implementation "org.jboss.resteasy:resteasy-jaxb-provider:${resteasyVersion}"
+    implementation "org.jboss.resteasy:resteasy-jackson2-provider:${resteasyVersion}"
+
+
+//    implementation "com.google.inject.extensions:guice-servlet:4.2.2"
+//    implementation "com.google.inject.extensions:guice-persist:4.2.2"
+//    implementation "com.sun.jersey:jersey-server:1.19.4"
+//    implementation "com.sun.jersey:jersey-json:1.19.4"
+//    implementation "com.sun.jersey.contribs:jersey-guice:1.19.4"
+//
+    implementation "javax.servlet:javax.servlet-api:4.0.1"
+
+
+
     implementation "org.hibernate:hibernate-core:${hibernateVersion}"
     implementation "com.h2database:h2:${h2Version}"
-    implementation "org.jboss.resteasy:resteasy-servlet-initializer:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-jaxb-provider:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-jaxrs-all:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-jackson2-provider:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-cdi:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-client:${resteasyVersion}"
-    implementation "org.jboss.weld.servlet:weld-servlet-shaded:${weldVersion}"
-    implementation "org.jboss.weld.se:weld-se-shaded:${weldVersion}"
-//    implementation 'org.apache.tomcat.embed:tomcat-embed-core:8.5.43'
-    implementation "org.eclipse.microprofile.config:microprofile-config-api"
-    implementation "io.smallrye:smallrye-config"
-//    implementation 'org.apache.tomcat.embed:tomcat-embed-logging-juli:8.5.43'
+//    implementation "org.jboss.resteasy:resteasy-servlet-initializer:${resteasyVersion}"
+//    implementation "org.jboss.resteasy:resteasy-jaxb-provider:${resteasyVersion}"
+//    implementation "org.jboss.resteasy:resteasy-jaxrs-all:${resteasyVersion}"
+//    implementation "org.jboss.resteasy:resteasy-jackson2-provider:${resteasyVersion}"
+//    implementation "org.jboss.resteasy:resteasy-cdi:${resteasyVersion}"
+//    implementation "org.jboss.resteasy:resteasy-client:${resteasyVersion}"
+//    implementation "org.jboss.weld.servlet:weld-servlet-shaded:${weldVersion}"
+//    implementation "org.jboss.weld.se:weld-se-shaded:${weldVersion}"
+//    implementation "org.apache.tomcat.embed:tomcat-embed-core:8.5.43"
+//    implementation "org.eclipse.microprofile.config:microprofile-config-api"
+//    implementation "io.smallrye:smallrye-config"
+//    implementation "org.apache.tomcat.embed:tomcat-embed-logging-juli:8.5.43"
 
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
