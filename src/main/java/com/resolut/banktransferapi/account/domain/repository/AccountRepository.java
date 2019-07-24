@@ -8,4 +8,5 @@ public interface AccountRepository {
 
     Optional<Account> findAccountById(Integer id);
 
+    void persist(Account account);
 }

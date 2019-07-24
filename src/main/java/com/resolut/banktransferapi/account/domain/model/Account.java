@@ -24,6 +24,10 @@ public class Account {
         this.createDate = LocalDateTime.now();
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public BigDecimal getBalance() {
         return balance;
     }

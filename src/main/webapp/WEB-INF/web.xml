@@ -2,11 +2,16 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
     <display-name>Bank Transfer API</display-name>
+
     <context-param>
-        <param-name>resteasy.servlet.mapping.prefix</param-name>
-        <!--Prefix for the endpoints-->
-        <param-value>/</param-value>
+        <param-name>resteasy.injector.factory</param-name>
+        <param-value>org.jboss.resteasy.cdi.CdiInjectorFactory</param-value>
     </context-param>
+
+<!--    <context-param>-->
+<!--        <param-name>resteasy.servlet.mapping.prefix</param-name>-->
+<!--        <param-value>/</param-value>-->
+<!--    </context-param>-->
     <servlet>
         <servlet-name>resteasy-servlet</servlet-name>
         <servlet-class>
@@ -22,6 +27,10 @@
         <!--Prefix for endpoint-->
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+
+    <listener>
+        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+    </listener>
 
     <resource-env-ref>
         <resource-env-ref-name>BeanManager</resource-env-ref-name>

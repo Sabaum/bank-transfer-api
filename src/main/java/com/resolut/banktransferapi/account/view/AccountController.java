@@ -6,6 +6,7 @@ import com.resolut.banktransferapi.account.view.request.TransferRequest;
 import com.resolut.banktransferapi.exception.ValidationException;
 import com.resolut.banktransferapi.util.Constants;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
 @Path("/api/account")
+@RequestScoped
 public class AccountController {
 
     @Inject

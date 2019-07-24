@@ -2,11 +2,15 @@ package com.resolut.banktransferapi.account.domain.repository;
 
 import com.resolut.banktransferapi.account.domain.model.Account;
 
+import javax.enterprise.inject.Default;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.Optional;
 
+@Named
+@Default
 public class JpaAccountRepository implements AccountRepository {
 
     private static EntityManagerFactory entityManagerFactory;
@@ -15,6 +19,11 @@ public class JpaAccountRepository implements AccountRepository {
         EntityManager entityManager = openEntityManager();
 
         return Optional.ofNullable(entityManager.find(Account.class, id));
+    }
+
+    @Override
+    public void persist(Account account) {
+        openEntityManager().persist(account);
     }
 
     private static EntityManager openEntityManager() {
