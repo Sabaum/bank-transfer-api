@@ -27,10 +27,5 @@ public class AccountTemplateLoader implements TemplateLoader {
             add("createDate", LocalDateTime.now());
         }});
 
-//        Fixture.of(Account.class).addTemplate("invalid", new Rule(){{
-//            add("id", random(Long.class, range(1L, 200L)));
-//            add("balance", random(BigDecimal.class, MathContext.DECIMAL32));
-//            add("createDate", LocalDateTime.now());
-//        }});
     }
 }
