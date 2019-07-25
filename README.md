@@ -29,11 +29,7 @@ For unix-based systems:
 java -jar build/libs/bank-transfer-api-1.0-SNAPSHOT-all.jar
 ```
 
-<<<<<<< HEAD
 For windows systems:
-=======
-For windows:
->>>>>>> 04f0afb24cf94c91723357366a3f4e32c461e34a
 
 ```
 gradlew.bat clean test shadowJar
@@ -49,7 +45,6 @@ There are unit tests for each business rule.
  
 Everything in the project can be verified by it's tests.
 Besides that, a postman collection was made available with the main possible requests (failing and succeeding) at the postman folder, on the root the project.
-<<<<<<< HEAD
 
 To facilitate testing, it was created a SQL import script with 2 insert commands. This script is run when the application goes up.
 It can be changed if the user needs some more accounts or if he wants to change the accounts or values. The current file is as follows:
@@ -58,8 +53,6 @@ It can be changed if the user needs some more accounts or if he wants to change 
 INSERT INTO ACCOUNT VALUES (123, 10000, CURRENT_TIMESTAMP);
 INSERT INTO ACCOUNT VALUES (321, 50, CURRENT_TIMESTAMP);
 ```
-=======
->>>>>>> 04f0afb24cf94c91723357366a3f4e32c461e34a
 ### Tests
 
 As stated before, the project was developed following TDD's rules, and because of that, a total of 27 tests were made; each single one born for a specific purpose.
