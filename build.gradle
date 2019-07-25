@@ -10,12 +10,10 @@ ext {
     hibernateVersion = "5.3.7.Final"
     h2Version = "1.4.199"
     resteasyVersion = "3.8.1.Final"
-    weldVersion = "3.1.1.Final"
     junitVersion = "4.12"
     mockitoVersion = "3.0.0"
     fixtureFactoryVersion = "3.1.0"
     guiceVersion = "4.2.2"
-    servletApiVersion = "4.0.1"
     jettyServletVersion = "9.4.19.v20190610"
 }
 
