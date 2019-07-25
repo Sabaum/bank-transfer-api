@@ -2,10 +2,12 @@ package com.revolut.banktransferapi.util;
 
 public final class Constants {
 
+
     private Constants() {
     }
 
-    public static final String INVALID_OBJECT_MESSAGE = "%s must be valid";
-    public static final String SAME_ACCOUNT_TRANSFER = "Can't transfer to the same account";
-    public static final String AMOUNT_MUST_BE_POSITIVE = "Amount must be a positive number";
+    static final String NULL_OBJECT_MESSAGE = "%s cannot be null";
+    static final String NOT_POSITIVE_NUMBER_MESSAGE = "%s must be a positive number";
+    static final String EMPTY_OPTIONAL_MESSAGE = "%s does not exist";
+    static final String SAME_ACCOUNT_TRANSFER_MESSAGE = "Can't transfer to the same account";
 }

@@ -7,6 +7,7 @@ import com.revolut.banktransferapi.account.view.response.DataResponse;
 import com.revolut.banktransferapi.exception.InvalidOperationException;
 import com.revolut.banktransferapi.exception.ValidationException;
 import com.revolut.banktransferapi.util.Constants;
+import com.revolut.banktransferapi.util.Validator;
 
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
@@ -41,22 +42,12 @@ public class AccountController {
     }
 
     private void validateTransferRequest(TransferRequest request) {
-        validateNullObject(request, "TransferRequest");
-        validateNullObject(request.getAmount(), "Amount");
-        validateNullObject(request.getAccountIdFrom(), "AccountIdFrom");
-        validateNullObject(request.getAccountIdTo(), "AccountIdTo");
-        if (request.getAmount().compareTo(BigDecimal.ZERO) < 1) {
-            throw new InvalidOperationException(Constants.AMOUNT_MUST_BE_POSITIVE);
-        }
-        if (request.getAccountIdFrom().equals(request.getAccountIdTo())) {
-            throw new InvalidOperationException(Constants.SAME_ACCOUNT_TRANSFER);
-        }
-    }
-
-    private void validateNullObject(Object obj, String fieldName) {
-        if (obj == null) {
-            throw new InvalidOperationException(String.format(Constants.INVALID_OBJECT_MESSAGE, fieldName));
-        }
+        Validator.NOT_NULL.validate(request, "TransferRequest");
+        Validator.NOT_NULL.validate(request.getAmount(), "Amount");
+        Validator.NOT_NULL.validate(request.getAccountIdFrom(), "AccountIdFrom");
+        Validator.NOT_NULL.validate(request.getAccountIdTo(), "AccountIdTo");
+        Validator.POSITIVE_NUMBER.validate(request.getAmount(), "Amount");
+        Validator.validateNotEquals(request.getAccountIdFrom(), request.getAccountIdTo());
     }
 
 }

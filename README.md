@@ -55,6 +55,6 @@ INSERT INTO ACCOUNT VALUES (321, 50, CURRENT_TIMESTAMP);
 ```
 ### Tests
 
-As stated before, the project was developed following TDD's rules, and because of that, a total of 27 tests were made; each single one born for a specific purpose.
+As stated before, the project was developed following TDD's rules, and because of that, a total of 34 tests were made; each single one born for a specific purpose.
 
 At the end only the config part of the project was not tested. All the rest is 100% unit tested.

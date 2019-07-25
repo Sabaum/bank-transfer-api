@@ -28,7 +28,7 @@ public class AccountControllerTest {
     @Test
     public void transfer_withNullRequest_shouldReturnError() {
         Response response = controller.transfer(null);
-        Assert.assertEquals("Should fail for null request", "TransferRequest must be valid", ((DataResponse) response.getEntity()).getError());
+        Assert.assertEquals("Should fail for null request", "TransferRequest cannot be null", ((DataResponse) response.getEntity()).getError());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class AccountControllerTest {
         TransferRequest request = new TransferRequest();
 
         Response response = controller.transfer(request);
-        Assert.assertEquals("Should fail for null amount", "Amount must be valid", ((DataResponse) response.getEntity()).getError());
+        Assert.assertEquals("Should fail for null amount", "Amount cannot be null", ((DataResponse) response.getEntity()).getError());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class AccountControllerTest {
         request.setAmount(BigDecimal.TEN);
 
         Response response = controller.transfer(request);
-        Assert.assertEquals("Should fail for null accountFrom", "AccountIdFrom must be valid", ((DataResponse) response.getEntity()).getError());
+        Assert.assertEquals("Should fail for null accountFrom", "AccountIdFrom cannot be null", ((DataResponse) response.getEntity()).getError());
    }
 
     @Test
@@ -55,7 +55,7 @@ public class AccountControllerTest {
         request.setAccountIdFrom(ANY_ID);
 
         Response response = controller.transfer(request);
-        Assert.assertEquals("Should fail for null accountTo", "AccountIdTo must be valid", ((DataResponse) response.getEntity()).getError());
+        Assert.assertEquals("Should fail for null accountTo", "AccountIdTo cannot be null", ((DataResponse) response.getEntity()).getError());
     }
 
     @Test
