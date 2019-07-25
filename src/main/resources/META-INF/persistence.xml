@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
-    <persistence-unit name="bank-transfer-pu">
+    <persistence-unit name="bank-transfer-pu" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Define the classes -->
-        <class>com.resolut.banktransferapi.account.domain.model.Account</class>
+        <class>com.revolut.banktransferapi.account.domain.model.Account</class>
+
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
             <property name="hibernate.connection.url" value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE"/>
             <property name="hibernate.connection.username" value="sa"/>
+
+            <property name="hibernate.connection.isolation" value="8"/>
 
             <property name="hibernate.connection.pool_size" value="5"/>
 

@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "4.0.4"
 }
 
 group 'com.revolut'
@@ -8,7 +9,14 @@ version '1.0-SNAPSHOT'
 ext {
     hibernateVersion = "5.3.7.Final"
     h2Version = "1.4.199"
+    resteasyVersion = "3.8.1.Final"
+    weldVersion = "3.1.1.Final"
+    junitVersion = "4.12"
+    mockitoVersion = "3.0.0"
     fixtureFactoryVersion = "3.1.0"
+    guiceVersion = "4.2.2"
+    servletApiVersion = "4.0.1"
+    jettyServletVersion = "9.4.19.v20190610"
 }
 
 sourceCompatibility = 1.8
@@ -18,10 +26,32 @@ repositories {
 }
 
 dependencies {
-    compile "org.hibernate:hibernate-core:${hibernateVersion}"
-    compile "com.h2database:h2:${h2Version}"
-    compile "br.com.six2six:fixture-factory:${fixtureFactoryVersion}"
+    implementation "org.eclipse.jetty:jetty-servlet:${jettyServletVersion}"
+    implementation "com.google.inject.extensions:guice-persist:${guiceVersion}"
+    implementation "com.google.inject.extensions:guice-servlet:${guiceVersion}"
+    implementation "org.jboss.resteasy:resteasy-guice:${resteasyVersion}"
+    implementation "org.jboss.resteasy:resteasy-jackson-provider:${resteasyVersion}"
+    implementation "org.hibernate:hibernate-core:${hibernateVersion}"
+    implementation "com.h2database:h2:${h2Version}"
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:3.0.0'
+    testImplementation "junit:junit:${junitVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "br.com.six2six:fixture-factory:${fixtureFactoryVersion}"
+}
+
+sourceSets {
+    main.java.srcDir "src/main/java"
+    main.resources.srcDir "src/main/resources"
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.revolut.banktransferapi.config.Main'
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
