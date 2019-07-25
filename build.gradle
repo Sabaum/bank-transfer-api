@@ -1,9 +1,7 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "4.0.4"
 }
-
-apply plugin: 'war'
-apply from: 'https://raw.github.com/gretty-gradle-plugin/gretty/master/pluginScripts/gretty.plugin'
 
 group 'com.revolut'
 version '1.0-SNAPSHOT'
@@ -16,65 +14,44 @@ ext {
     junitVersion = "4.12"
     mockitoVersion = "3.0.0"
     fixtureFactoryVersion = "3.1.0"
+    guiceVersion = "4.2.2"
+    servletApiVersion = "4.0.1"
+    jettyServletVersion = "9.4.19.v20190610"
 }
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    jcenter()
-    maven {
-        name "lightbend-maven-release"
-        url "https://repo.lightbend.com/lightbend/maven-releases"
-    }
-    ivy {
-        name "lightbend-ivy-release"
-        url "https://repo.lightbend.com/lightbend/ivy-releases"
-        layout "ivy"
-    }
 }
 
 dependencies {
-    implementation "org.eclipse.jetty:jetty-servlet:9.4.19.v20190610"
-    implementation "com.google.inject:guice:4.2.2"
-    implementation 'com.google.inject.extensions:guice-persist:4.2.2'
-    implementation "com.google.inject.extensions:guice-servlet:4.2.2"
-    implementation "org.jboss.resteasy:resteasy-jaxrs:${resteasyVersion}"
+    implementation "org.eclipse.jetty:jetty-servlet:${jettyServletVersion}"
+    implementation "com.google.inject.extensions:guice-persist:${guiceVersion}"
+    implementation "com.google.inject.extensions:guice-servlet:${guiceVersion}"
     implementation "org.jboss.resteasy:resteasy-guice:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-jaxb-provider:${resteasyVersion}"
-    implementation "org.jboss.resteasy:resteasy-jackson2-provider:${resteasyVersion}"
-
-
-//    implementation "com.google.inject.extensions:guice-servlet:4.2.2"
-//    implementation "com.google.inject.extensions:guice-persist:4.2.2"
-//    implementation "com.sun.jersey:jersey-server:1.19.4"
-//    implementation "com.sun.jersey:jersey-json:1.19.4"
-//    implementation "com.sun.jersey.contribs:jersey-guice:1.19.4"
-//
-    implementation "javax.servlet:javax.servlet-api:4.0.1"
-
-
-
+    implementation "org.jboss.resteasy:resteasy-jackson-provider:${resteasyVersion}"
     implementation "org.hibernate:hibernate-core:${hibernateVersion}"
     implementation "com.h2database:h2:${h2Version}"
-//    implementation "org.jboss.resteasy:resteasy-servlet-initializer:${resteasyVersion}"
-//    implementation "org.jboss.resteasy:resteasy-jaxb-provider:${resteasyVersion}"
-//    implementation "org.jboss.resteasy:resteasy-jaxrs-all:${resteasyVersion}"
-//    implementation "org.jboss.resteasy:resteasy-jackson2-provider:${resteasyVersion}"
-//    implementation "org.jboss.resteasy:resteasy-cdi:${resteasyVersion}"
-//    implementation "org.jboss.resteasy:resteasy-client:${resteasyVersion}"
-//    implementation "org.jboss.weld.servlet:weld-servlet-shaded:${weldVersion}"
-//    implementation "org.jboss.weld.se:weld-se-shaded:${weldVersion}"
-//    implementation "org.apache.tomcat.embed:tomcat-embed-core:8.5.43"
-//    implementation "org.eclipse.microprofile.config:microprofile-config-api"
-//    implementation "io.smallrye:smallrye-config"
-//    implementation "org.apache.tomcat.embed:tomcat-embed-logging-juli:8.5.43"
 
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
     testImplementation "br.com.six2six:fixture-factory:${fixtureFactoryVersion}"
 }
 
-gretty {
-    contextPath = "/bank-transfer"
+sourceSets {
+    main.java.srcDir "src/main/java"
+    main.resources.srcDir "src/main/resources"
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.revolut.banktransferapi.config.Main'
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
