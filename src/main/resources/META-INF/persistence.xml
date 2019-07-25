@@ -4,7 +4,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- Define the classes -->
-        <class>com.resolut.banktransferapi.account.domain.model.Account</class>
+        <class>com.revolut.banktransferapi.account.domain.model.Account</class>
 
 
         <properties>
